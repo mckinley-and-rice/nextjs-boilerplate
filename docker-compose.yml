@@ -1,0 +1,37 @@
+version: "3.2"
+services:
+  next:
+    image: node:12-alpine
+    working_dir: /apps
+    restart: on-failure
+    env_file: .env
+    command: npm run dev
+    ports:
+      - "3001:3001"
+    volumes:
+      - type: bind
+        source: ./
+        target: /apps
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+
+  storybook:
+    image: node:12-alpine
+    working_dir: /apps
+    restart: on-failure
+    ports:
+      - "9090:9090"
+    env_file: .env
+    command: npm run storybook
+    volumes:
+      - type: bind
+        source: .
+        target: /apps
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
